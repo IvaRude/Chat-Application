@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import CustomUser
+from .models import CustomUser, UserInfo
 from .forms import CustomUserCreationForm
 
 
@@ -21,3 +21,6 @@ class SignUpView(CreateView):
     template_name = 'registration/signup.html'
 
 
+class ProfileView(DetailView):
+    model = UserInfo
+    template_name = 'accounts/profile.html'

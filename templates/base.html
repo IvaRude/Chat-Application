@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+    <header>
+        <a href="{% url 'signup' %}">Sign In</a> | 
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Log Out</a> |
+            <a href="{{ request.user.user_info.get_absolute_url }}">My Profile</a>
+        {% else %}
+            <a href="{% url 'login' %}">Log In</a>
+        {% endif %}
+    </header>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

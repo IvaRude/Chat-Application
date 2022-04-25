@@ -3,6 +3,7 @@ from django.db import models
 from django import forms
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
+from annoying.fields import AutoOneToOneField
 import os
 
 
@@ -15,19 +16,26 @@ import os
 
 
 class CustomUser(AbstractUser):
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     user_info = UserInfo.objects.create(
+    #         user=self,
+    #         first_name='',
+    #         last_name='',
+    #     )
     pass
 
 
 class UserInfo(models.Model):
-    user = models.OneToOneField(CustomUser, related_name='user_info', on_delete=models.CASCADE, primary_key=True)
-    first_name = models.CharField(max_length=30, verbose_name='Имя')
+    user = AutoOneToOneField(CustomUser, related_name='user_info', on_delete=models.CASCADE, null=False)
+    first_name = models.CharField(max_length=30, verbose_name='Имя', null=True, blank=True)
     last_name = models.CharField(max_length=30, verbose_name='Фамилия', null=True, blank=True)
     # birth_date = models.DateField(
     #     verbose_name='Дата рождения', null=True, blank=True)
     # age = models.PositiveIntegerField(null=True, blank=True)
 
-    # def get_absolute_url(self):
-    #     """ нужен, чтобы при создании очередного объекта сразу перебрасывало на эту страницу
-    #     без get_success_url """
-    #
-    #     return reverse('profile', args=[str(self.id)])
+    def get_absolute_url(self):
+        """ нужен, чтобы при создании очередного объекта сразу перебрасывало на эту страницу
+        без get_success_url """
+    
+        return reverse('profile', args=[str(self.pk)])
