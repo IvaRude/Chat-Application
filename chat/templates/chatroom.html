@@ -9,6 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
 
     <title>ChatRoom</title>
 </head>
@@ -16,10 +17,14 @@
 <body>
 
     <div class="container">
+        <div class="sidebar">
+            Sidebar
+        </div>
         <div class="row d-flex justify-content-center">
             <div class="col-6">
                 <form>
                     <div class="form-group">
+                        
                         <label for="exampleFormControlTextarea1" class="h4 pt-5">Chatroom</label>
                         <!-- <textarea class="form-control" id="chat-text" rows="10"></textarea><br> -->
                         <div id="chat-text"></div>
@@ -36,7 +41,22 @@
     {{ request.user.username|json_script:"user_username" }}
     {{ room_name|json_script:"room-name" }}
     <script src="{% static 'reconnecting-websocket.js' %}"></script>
+    <script src="{% static 'chat.js' %}"></script>
     <script>
+        const username = JSON.parse(document.getElementById('user_username').textContent);
+        const sidebarSocket = new ReconnectingWebSocket(
+            'ws://' +
+            window.location.host +
+            '/ws/user/' +
+            username +
+            '/'
+        );
+        sidebarSocket.onopen = function(e) {
+            console.log('Sidebar online')
+            console.log('Hello ' + username)
+        }
+    </script>
+    <!-- <script>
         const user_username = JSON.parse(document.getElementById('user_username').textContent);
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         
@@ -107,7 +127,7 @@
             document.querySelector('#chat-text').appendChild(pTag);
         }
     };
-    </script>
+    </script> -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

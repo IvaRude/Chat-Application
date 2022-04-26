@@ -1,3 +1,4 @@
+# from contextlib import AsyncContextDecorator
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
 from asgiref.sync import sync_to_async
@@ -82,3 +83,22 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
     async def chatroom_message(self, event):
         message = event['message']
         await self.send(text_data=json.dumps(message))
+
+
+class SideBarConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.username = self.scope['url_route']['kwargs']['username']
+        self.sidebar_name = 'sidemar_%s' % self.username
+        
+        await self.channel_layer.group_add(
+            self.sidebar_name,
+            self.channel_name
+        )
+        # Должно быть перед сообщениями!
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.sidebar_name,
+            self.channel_name
+        )
