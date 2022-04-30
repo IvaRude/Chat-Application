@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from annoying.fields import AutoOneToOneField
 import os
 
+# from chats.models import Chat
 
 # def avatar_upload_to(instance, filename):
 #     return os.path.join(MEDIA_ROOT, instance.user.username + os.path.splitext(filename)[1])
@@ -23,8 +24,9 @@ class CustomUser(AbstractUser):
     #         first_name='',
     #         last_name='',
     #     )
+    # def my_chats(self):
+    #     return self.chats.filter(members__contains=self)
     pass
-
 
 class UserInfo(models.Model):
     user = AutoOneToOneField(CustomUser, related_name='user_info', on_delete=models.CASCADE, null=False)
