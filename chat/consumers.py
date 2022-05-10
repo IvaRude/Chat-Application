@@ -23,7 +23,8 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         return [await sync_to_async(self.message_to_json)(message) for message in messages]
 
     async def fetch_messages(self, data):
-        messages = await sync_to_async(list)(self.chat.last_10_messages())
+        page = data['page']
+        messages = await sync_to_async(list)(self.chat.get_page(int(page)))
         content = {
             'messages': await self.messages_to_json(messages),
             'command': 'fetch_messages',

@@ -16,6 +16,10 @@ class Chat(models.Model):
     is_empty = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def get_page(self, page):
+        num_of_messages_on_page = 10
+        return self.messages.all()[num_of_messages_on_page * (page - 1): num_of_messages_on_page * page]
+
     def last_10_messages(self):
         return self.messages.all()[:10]
 

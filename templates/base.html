@@ -3,6 +3,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+     <!-- Required meta tags -->
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+     <link href="{% static 'css/base.css' %}" rel="stylesheet">
     <title>{% block title %}{% endblock title %}</title>
 </head>
 <body>
@@ -18,5 +26,27 @@
     </header>
     {% block content %}
     {% endblock content %}
+
+    <!-- <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script
+    src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script>
+    var csrftoken = Cookies.get('csrftoken');
+    functioncsrfSafeMethod(method) {
+        // Для этих методов токен не будет подставляться в заголовок.
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    }
+    }
+    });
+    $(document).ready(function(){
+      {% block domready %}{% endblock %}
+    });
+</script> -->
 </body>
 </html>
