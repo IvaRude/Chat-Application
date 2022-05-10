@@ -10,7 +10,8 @@
         <a href="{% url 'signup' %}">Sign In</a> | 
         {% if user.is_authenticated %}
             <a href="{% url 'logout' %}">Log Out</a> |
-            <a href="{{ request.user.user_info.get_absolute_url }}">My Profile</a>
+            <a href="{{ request.user.user_info.get_absolute_url }}">My Profile</a><br>
+            <a href="{% url 'all_users' %}">Users</a>
         {% else %}
             <a href="{% url 'login' %}">Log In</a>
         {% endif %}

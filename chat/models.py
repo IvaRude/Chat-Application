@@ -22,8 +22,8 @@ class Chat(models.Model):
     def last_message(self):
         return self.messages.first()
 
-    # def get_absolute_url(self):
-    #     return reverse('chat', {'chat_id': self.pk})
+    def get_absolute_url(self):
+        return reverse('room', args=[str(self.pk)])
 
 
 class Message(models.Model):

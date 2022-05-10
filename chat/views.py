@@ -34,8 +34,8 @@ def create_chat(request, user_pk):
     companion = User.objects.get(id=user_pk)
     for chat in my_user.chats.all():
         if companion in chat.members.all():
-            return redirect('chat', chat_pk=chat.pk)
+            return redirect('room', chat_pk=chat.pk)
     new_chat = Chat()
     new_chat.save()
     new_chat.members.add(my_user.pk, companion.pk)
-    return redirect('chat', chat_pk=new_chat.pk)
+    return redirect('room', chat_pk=new_chat.pk)

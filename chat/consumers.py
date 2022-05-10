@@ -130,12 +130,14 @@ class SideBarConsumer(AsyncWebsocketConsumer):
     def one_chat_to_json(self, chat):
         title = chat.members.exclude(pk=self.user.pk)[0].username
         last_message = chat.last_message().content
+        # link = chat.get_absolute_url()
         if len(last_message) > 15:
             last_message = last_message[:12] + '...'
         return {
             'title': title,
             'last_message': last_message,
-            'chat_pk': chat.pk,
+            # 'chat_pk': chat.pk,
+            'link': chat.get_absolute_url(),
             # 'timestamp': str(message.timestamp),
         }
 

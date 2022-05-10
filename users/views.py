@@ -24,3 +24,8 @@ class SignUpView(CreateView):
 class ProfileView(DetailView):
     model = UserInfo
     template_name = 'accounts/profile.html'
+
+
+class UsersListView(ListView):
+    model = CustomUser
+    template_name = 'accounts/all_users.html'

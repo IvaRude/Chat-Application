@@ -26,7 +26,9 @@
                 <form>
                     <div class="form-group">
                         
-                        <label for="exampleFormControlTextarea1" class="h4 pt-5">{{ companion.username }}</label>
+                        <label for="exampleFormControlTextarea1" class="h4 pt-5">
+                            <a href="{{ companion.user_info.get_absolute_url }}">{{ companion.username }}</a>
+                        </label>
                         <!-- <textarea class="form-control" id="chat-text" rows="10"></textarea><br> -->
                         <div id="chat-text"></div>
                     </div>
@@ -80,12 +82,14 @@
 
         function createChatLink(data) {
             var title = data['title'];
-            var chat_pk = data['chat_pk'].toString();
+            // var chat_pk = data['chat_pk'].toString();
             var last_message = data['last_message'];
+            var link = data['link'];
+
             var br = document.createElement('br');
             var aTag = document.createElement('a');
             aTag.textContent = title + "\n" + last_message;
-            aTag.href = "{% url 'room' 0 %}".slice(0, -2) + chat_pk + '/';
+            aTag.href = link;
             document.querySelector('#sidebar').appendChild(aTag);
             document.querySelector('#sidebar').appendChild(br);
         };
