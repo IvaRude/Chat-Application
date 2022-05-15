@@ -137,7 +137,7 @@ class SideBarConsumer(AsyncWebsocketConsumer):
         return {
             'title': title,
             'last_message': last_message,
-            # 'chat_pk': chat.pk,
+            'chat_pk': chat.pk,
             'link': chat.get_absolute_url(),
             # 'timestamp': str(message.timestamp),
         }

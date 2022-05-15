@@ -7,7 +7,7 @@
 
 
 
-    <div class="container">
+    <!-- <div class="container">
         <div class="sidebar">
             Sidebar
             <div id="sidebar"></div>
@@ -20,7 +20,7 @@
                         <label for="exampleFormControlTextarea1" class="h4 pt-5">
                             <a href="{{ companion.user_info.get_absolute_url }}">{{ companion.username }}</a>
                         </label>
-                        <!-- <textarea class="form-control" id="chat-text" rows="10"></textarea><br> -->
+                        <textarea class="form-control" id="chat-text" rows="10"></textarea><br>
                         <div id="chat-text">
                         </div>
                     </div>
@@ -31,7 +31,106 @@
                 </form>
             </div>
         </div>
+    </div> -->
+    <!-- NEW---------------------------------------------------------- -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+<div class="container">
+<h3 class=" text-center">Messaging</h3>
+<div class="messaging">
+  <div class="inbox_msg">
+    <div class="inbox_people">
+      <div class="headind_srch">
+        <div class="recent_heading">
+          <h4>Recent</h4>
+        </div>
+        <div class="srch_bar">
+          <div class="stylish-input-group">
+            <input type="text" class="search-bar"  placeholder="Search" >
+            <span class="input-group-addon">
+            <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+            </span> </div>
+        </div>
+      </div>
+      <div class="inbox_chat" id="sidebar">
+        <!-- <div class="chat_list active_chat">
+          <div class="chat_people">
+            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
+            <div class="chat_ib">
+              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+              <p>Test, which is a new approach to have all solutions 
+                astrology under one roof.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat_list">
+          <div class="chat_people">
+            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="sunil"> </div>
+            <div class="chat_ib">
+              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+              <p>Test, which is a new approach to have all solutions 
+                astrology under one roof.</p>
+            </div>
+          </div>
+        </div> -->
+      </div>
     </div>
+    <!-- -----------MESSAGES------------------------------ -->
+    <div class="mesgs">
+      <div class="my_chat">
+      <div class="msg_history" id="chat">
+        <!-- <div class="incoming_msg">
+          <div class="incoming_msg_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
+          <div class="received_msg">
+            <div class="received_withd_msg">
+              <p>Test which is a new approach to have all
+                solutions</p>
+              <span class="time_date"> 11:01 AM    |    June 9</span></div>
+          </div>
+        </div>
+        <div class="outgoing_msg">
+          <div class="sent_msg">
+            <p>Test which is a new approach to have all
+              solutions</p>
+            <span class="time_date"> 11:01 AM    |    June 9</span> </div>
+        </div>
+        <div class="incoming_msg">
+          <div class="incoming_msg_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
+          <div class="received_msg">
+            <div class="received_withd_msg">
+              <p>Test, which is a new approach to have</p>
+              <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
+          </div>
+        </div>
+        <div class="outgoing_msg">
+          <div class="sent_msg">
+            <p>Apollo University, Delhi, India Test</p>
+            <span class="time_date"> 11:01 AM    |    Today</span> </div>
+        </div> -->
+        <!-- <div class="incoming_msg">
+          <div class="incoming_msg_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
+          <div class="received_msg">
+            <div class="received_withd_msg">
+              <p>We work directly with our designers and suppliers,
+                and sell direct to you, which means quality, exclusive
+                products, at a price anyone can afford.</p>
+              <span class="time_date"> 11:01 AM    |    Today</span></div>
+          </div>
+        </div> -->
+      </div>
+    
+      <div class="type_msg">
+        <div class="input_msg_write">
+          <input type="text" class="write_msg" placeholder="Type a message" />
+          <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
     <!-- Переводит room_name из views.py в room-name для js и consumers.py-->
     {{ request.user.username|json_script:"user_username" }}
     {{ room_name|json_script:"chat_pk" }}
@@ -81,10 +180,42 @@
 
             var br = document.createElement('br');
             var aTag = document.createElement('a');
-            aTag.textContent = title + "\n" + last_message;
+            // aTag.textContent = title + "\n" + last_message;
             aTag.href = link;
+            // document.querySelector('#sidebar').appendChild(aTag);
+            // document.querySelector('#sidebar').appendChild(br);
+
+
+            var div1 = document.createElement('div');
+            div1.className = 'chat_list';
+            if (roomName == data['chat_pk']){
+                div1.className += ' active_chat';
+            }
+            var div2 = document.createElement('div');
+            div2.className = 'chat_people';
+            var div3 = document.createElement('div');
+            var div4 = document.createElement('div');
+            var img = document.createElement('img');
+            img.alt = 'sunil';
+            img.src = 'https://bootdey.com/img/Content/avatar/avatar1.png';
+            div3.appendChild(img);
+            div3.className = 'chat_img';
+            div4.className = 'chat_ib';
+            var name = document.createElement('h5');
+            name.textContent = data['title'];
+            var date = document.createElement('span');
+            date.className = 'chat_date';
+            date.textContent = 'Dec 25';
+            name.appendChild(date);
+            var message = document.createElement('p');
+            message.textContent = last_message;
+            div4.appendChild(name);
+            div4.appendChild(message);
+            div2.appendChild(div3);
+            div2.appendChild(div4);
+            div1.appendChild(div2);
+            aTag.appendChild(div1);
             document.querySelector('#sidebar').appendChild(aTag);
-            document.querySelector('#sidebar').appendChild(br);
         };
     </script>
 <script>
@@ -97,14 +228,14 @@
     //     }
     // };
 
-    document.querySelector('#input').onkeyup = function(e) {
+    document.querySelector('.write_msg').onkeyup = function(e) {
         if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#submit').click();
+            document.querySelector('.msg_send_btn').click();
         }
     };
 
-    document.querySelector('#submit').onclick = function (e) {
-        const messageInputDom = document.querySelector('#input');
+    document.querySelector('.msg_send_btn').onclick = function (e) {
+        const messageInputDom = document.querySelector('.write_msg');
         const message = messageInputDom.value;
         chatSocket.send(JSON.stringify({
             'content': message,
@@ -146,10 +277,13 @@
     console.log(data)
     if (data['command'] === 'fetch_messages') {
         for (let i=0; i < data['messages'].length; i++) {
-        createMessage(data['messages'][i]);
+          var msg = createMessage(data['messages'][i]);
+          document.querySelector('.msg_history').prepend(msg);
         }
     } else if (data['command'] === 'new_message'){
-        createMessage(data['message']);
+        var msg = createMessage(data['message']);
+        document.querySelector('.msg_history').appendChild(msg);
+        $(".msg_history").scrollTop(123);
         // Обновляет sidebar только у тех кто сейчас смотрит в этот диалог
         // fetchChats();
     }
@@ -157,22 +291,75 @@
     function createMessage(data) {
         // console.log(data)
         var author = data['author'];
-        var pTag = document.createElement('p');
-        pTag.textContent = author + ': ' + data.content;
-        document.querySelector('#chat-text').prepend(pTag);
+        // var pTag = document.createElement('p');
+        // pTag.textContent = author + ': ' + data.content;
+        // document.querySelector('#chat-text').appendChild(pTag);
+
+        var message = document.createElement('p');
+          message.textContent = data['content'];
+
+          var date = document.createElement('span');
+          date.className = 'time_date';
+          date.textContent = data['timestamp'];
+
+        if(username === author){
+          var div1 = document.createElement('div');
+          div1.className = 'outgoing_msg';
+
+          var div2 = document.createElement('div');
+          div2.className = 'sent_msg';
+
+          div2.appendChild(message);
+          div2.appendChild(date);
+          div1.appendChild(div2);
+          // document.querySelector('.msg_history').appendChild(div1);
+          return div1;
+        }
+        else {
+          var div1 = document.createElement('div');
+          div1.className = 'incoming_msg';
+
+          var div2 = document.createElement('div');
+          div2.className = 'incoming_msg_img';
+
+          var avatar = document.createElement('img');
+          avatar.src = 'https://bootdey.com/img/Content/avatar/avatar1.png';
+          avatar.alt = 'sunil';
+
+          var div3 = document.createElement('div');
+          div3.className = 'received_msg';
+
+          var div4 = document.createElement('div');
+          div4.className = 'received_withd_msg';
+
+          div4.appendChild(message);
+          div4.appendChild(date);
+
+          div3.appendChild(div4);
+          div2.appendChild(avatar);
+          div1.append(div2);
+          div1.append(div3);
+          // document.querySelector('.msg_history').appendChild(div1);
+          return div1;
+        }
     }
     };
 
-
-    var chat = $('#chat-text');
-    $(window).scroll(function()
+    var chat = $('#chat');
+    // $(window).scroll(function()
+    chat.scrollTop(chat[0].scrollHeight);
+    // chat.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    $(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
+    chat.scroll(function()
         {
         if ($(this).scrollTop() == 0)
             {
                 page += 1;
                 fetchMessages(page);
-                var h = $(chat).children().eq(0).height();
-                $(window).scrollTop(h);
+                // var h = $(chat).children().eq(0).height();
+                var h = 1;
+                chat.scrollTop(1);
+                console.log(chat.scrollHeight);
             }
         });
 </script>
@@ -215,26 +402,3 @@
     //     });
 </script>
 {% endblock content %}
-
-<!-- {% block domready %}
-  var page = 1;
-  var empty_page = false;
-  var block_request = false;
-
-  $(window).scroll(function() {
-    var margin = $(document).height() - $(window).height() - 200;
-    if  ($(window).scrollDown() > margin && empty_page == false && block_request == false) {
-     block_request = true;
-      page += 1;
-      $.get('?page=' + page, function(data) {
-       if(data == '') {
-          empty_page = true;
-        }
-        else {
-          block_request = false;
-          $('#chat-text').append(data);
-        }
-      });
-    }
-  });
-{% endblock %} -->

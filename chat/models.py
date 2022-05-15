@@ -18,13 +18,13 @@ class Chat(models.Model):
 
     def get_page(self, page):
         num_of_messages_on_page = 10
-        return self.messages.all()[num_of_messages_on_page * (page - 1): num_of_messages_on_page * page]
+        return self.messages.all().order_by('-timestamp')[num_of_messages_on_page * (page - 1): num_of_messages_on_page * page]
 
     def last_10_messages(self):
         return self.messages.all()[:10]
 
     def last_message(self):
-        return self.messages.first()
+        return self.messages.last()
 
     def get_absolute_url(self):
         return reverse('room', args=[str(self.pk)])
@@ -37,7 +37,7 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-timestamp']
+        ordering = ['timestamp']
 
     def __str__(self):
         return self.author.username
