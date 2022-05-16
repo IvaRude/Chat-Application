@@ -1,13 +1,13 @@
-.sidebar {
+/* .sidebar {
     position: fixed;
     left: 0;
     top: 50px;
     width: 100%;
-}
+} */
 
 header {
-    position: fixed;
-    top: 0;
+    /* position: fixed; */
+    /* top: 0; */
     width: 100%;
 }
 
@@ -31,7 +31,8 @@ header {
     border: 1px solid #c4c4c4;
     clear: both;
     overflow: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
+    height: 601px;
   }
   .top_spac{ margin: 20px 0 0;}
   
@@ -115,13 +116,16 @@ header {
     padding: 30px 15px 0 0px;
     width: 100%;
     /* max-height: 100px; */
+    height: 10%;
+    /* overflow: hidden; */
   }
   
    .sent_msg p {
     background: #05728f none repeat scroll 0 0;
     border-radius: 3px;
     font-size: 14px;
-    margin: 0; color:#fff;
+    margin: 0; 
+    color:#fff;
     padding: 5px 10px 5px 12px;
     width:100%;
   }
@@ -131,6 +135,10 @@ header {
     float: right;
     width: 46%;
   }
+  .input_msg_write {
+    display: flex;
+    justify-content: space-between;
+  }
   .input_msg_write input {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
@@ -138,11 +146,12 @@ header {
     font-size: 15px;
     min-height: 48px;
     margin-left: 2%;
-    width: 57%;
+    padding-right: 33px;
+    width: 100%;
   }
   
   .type_msg {border-top: 1px solid #c4c4c4;
-    padding-top: 10px;
+    /* padding-top: 10px; */
     /* position: relative; */
     /* position: fixed; */
     /* left: 20%; */
@@ -156,24 +165,68 @@ header {
     cursor: pointer;
     font-size: 17px;
     height: 33px;
-    /* position: absolute; */
+    /* position: relative; */
     float: right;
     right: 0;
     /* top: 11px; */
     width: 33px;
-    margin-right: 2%;
-    margin-top: 0.9%;
+    /* margin-right: 2%; */
+    margin: 7px 1%;
+    /* margin-top: 0.9%; */
   }
   .messaging { padding: 0 0 50px 0;
+    height: 100px;
     /* display: flex;
     flex-wrap:nowrap; */
   }
   .msg_history {
-    height: 516px;
-    overflow-y: auto;
+    height: 550px;
+    overflow-y: scroll;
     padding: 0 2% 0 2%;
   }
-  .my_chat {
-    /* float: left; */
-    left: 40%;
+  .content {
+    margin-left: 35%;
+  }
+  .chat_link :hover{
+    background:#ebebeb;
+  }
+  h3, h5, h4 {
+    font-weight: bold;
+  }
+  .received_withd_msg, .outgoing_msg p{
+    word-wrap: break-word;
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #c4c4c4;
+    background: #05728f;
+
+    padding: 0 20px;
+  }
+  .nav a {
+    color: #fff;
+    font-weight: bold;
+  }
+  /* -------------------------------------------------FOR LOGIN----------------- */
+  .login {
+    /* margin: 10% 10% 0 40%; */
+      margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    height: 20em;
+  }
+  .login input {
+    margin-bottom: 10px;
+  }
+  .login button {
+    background: #05728f;
+    color: #fff;
+    border: none;
+    font-weight: bold;
   }

@@ -14,39 +14,140 @@
     <title>{% block title %}{% endblock title %}</title>
 </head>
 <body>
-    <header>
-        <a href="{% url 'signup' %}">Sign In</a> | 
-        {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}">Log Out</a> |
-            <a href="{{ request.user.user_info.get_absolute_url }}">My Profile</a><br>
-            <a href="{% url 'all_users' %}">Users</a>
-        {% else %}
-            <a href="{% url 'login' %}">Log In</a>
-        {% endif %}
-    </header>
-    {% block content %}
-    {% endblock content %}
+    
 
-    <!-- <script
-    src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script
-    src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script>
-    var csrftoken = Cookies.get('csrftoken');
-    functioncsrfSafeMethod(method) {
-        // Для этих методов токен не будет подставляться в заголовок.
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
-    $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-    }
-    }
-    });
-    $(document).ready(function(){
-      {% block domready %}{% endblock %}
-    });
-</script> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+<div class="container">
+<h3 class=" text-center">Messaging</h3>
+<div class="messaging">
+  <div class="inbox_msg">
+    <div class="inbox_people">
+        <div class="nav">
+            <!-- <p>asd</p> -->
+            <a href="{% url 'signup' %}">Sign Up</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Log Out</a>
+                <a href="{{ request.user.user_info.get_absolute_url }}">My Profile</a>
+                <a href="{% url 'all_users' %}">Users</a>
+            {% else %}
+                <a href="{% url 'login' %}">Log In</a>
+            {% endif %}
+        </div>
+      <div class="headind_srch">
+        <div class="recent_heading">
+          <h4>Recent</h4>
+        </div>
+        <div class="srch_bar">
+          <div class="stylish-input-group">
+            <input type="text" class="search-bar"  placeholder="Search" >
+            <span class="input-group-addon">
+            <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+            </span> </div>
+        </div>
+      </div>
+      <div class="inbox_chat" id="sidebar"></div>
+    </div>
+    <div class="content">
+        {% block content %}
+        {% endblock content %}
+    </div>
+</div>
+</div>
+</div>
 </body>
+<script src="{% static 'reconnecting-websocket.js' %}"></script>
+    {{ request.user.username|json_script:"user_username" }}
+    {{ room_name|json_script:"chat_pk" }}
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!-- <script src="{% static 'chat.js' %}"></script> -->
+    <script>
+        var username = JSON.parse(document.getElementById('user_username').textContent);
+        var roomName = JSON.parse(document.getElementById('chat_pk').textContent);
+        // console.log(username);
+        if(username) {
+        var sidebarSocket = new ReconnectingWebSocket(
+            'ws://' +
+            window.location.host +
+            '/ws/user/' +
+            username +
+            '/'
+        );
+        };
+        
+        sidebarSocket.onopen = function(e) {
+            // console.log('Sidebar online');
+            // console.log('Hello ' + username);
+            // console.log('roomName: ' + roomName)
+            fetchChats();
+        }
+    
+
+        function fetchChats() {
+            console.log('fetchChats');
+            sidebarSocket.send(JSON.stringify({'command': 'fetch_chats' }));
+        }
+
+        sidebarSocket.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            // console.log(data)
+            if (data['command'] === 'fetch_chats') {
+                
+                document.querySelector('#sidebar').innerHTML = "";
+
+                for (let i=data['chats'].length - 1; i >= 0; i--) {
+                createChatLink(data['chats'][i]);
+                }
+            } else if (data['command'] === 'new_message'){
+                createChat(data['message']);
+            }
+        };
+
+        function createChatLink(data) {
+            // console.log('create chat link');
+            var title = data['title'];
+            // var chat_pk = data['chat_pk'].toString();
+            var last_message = data['last_message'];
+            var link = data['link'];
+
+            var br = document.createElement('br');
+            var aTag = document.createElement('a');
+            // aTag.textContent = title + "\n" + last_message;
+            aTag.href = link;
+            aTag.className = 'chat_link'
+            // document.querySelector('#sidebar').appendChild(aTag);
+            // document.querySelector('#sidebar').appendChild(br);
+
+
+            var div1 = document.createElement('div');
+            div1.className = 'chat_list';
+            if (roomName && roomName == data['chat_pk']){
+                div1.className += ' active_chat';
+            }
+            var div2 = document.createElement('div');
+            div2.className = 'chat_people';
+            var div3 = document.createElement('div');
+            var div4 = document.createElement('div');
+            var img = document.createElement('img');
+            img.alt = 'sunil';
+            img.src = 'https://bootdey.com/img/Content/avatar/avatar1.png';
+            div3.appendChild(img);
+            div3.className = 'chat_img';
+            div4.className = 'chat_ib';
+            var name = document.createElement('h5');
+            name.textContent = data['title'];
+            var date = document.createElement('span');
+            date.className = 'chat_date';
+            date.textContent = data['timestamp'];
+            name.appendChild(date);
+            var message = document.createElement('p');
+            message.textContent = last_message;
+            div4.appendChild(name);
+            div4.appendChild(message);
+            div2.appendChild(div3);
+            div2.appendChild(div4);
+            div1.appendChild(div2);
+            aTag.appendChild(div1);
+            document.querySelector('#sidebar').appendChild(aTag);
+        };
+    </script>
 </html>

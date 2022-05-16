@@ -4,12 +4,17 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <p>Hi, {{ user.username }}!</p>
+        <p>Choose the chat to write somebody</p>
     {% else %}
         <form method='POST'>
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Log In</button>
+                <div class="login">
+                    <input type="text" id="username" autofocus="autofocus" placeholder="Username" name="username">
+                    <input type="password" id="password" placeholder="Password" name="password">			
+                    <button type="submit">
+                    Log In
+                    </button>
+                </div>
         </form>
-    {% endif %}
+    {% endif %}   
 {% endblock content %}

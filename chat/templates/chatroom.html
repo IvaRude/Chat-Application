@@ -4,36 +4,8 @@
 {% block title %}ChatRoom{% endblock title %}
 
 {% block content %}
-
-
-
-    <!-- <div class="container">
-        <div class="sidebar">
-            Sidebar
-            <div id="sidebar"></div>
-        </div>
-        <div class="row d-flex justify-content-center">
-            <div class="col-6">
-                <form>
-                    <div class="form-group">
-                        
-                        <label for="exampleFormControlTextarea1" class="h4 pt-5">
-                            <a href="{{ companion.user_info.get_absolute_url }}">{{ companion.username }}</a>
-                        </label>
-                        <textarea class="form-control" id="chat-text" rows="10"></textarea><br>
-                        <div id="chat-text">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" id="input" type="text"></br>
-                    </div>
-                    <input class="btn btn-secondary btn-lg btn-block" id="submit" type="button" value="Send">
-                </form>
-            </div>
-        </div>
-    </div> -->
     <!-- NEW---------------------------------------------------------- -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 <div class="container">
 <h3 class=" text-center">Messaging</h3>
 <div class="messaging">
@@ -52,72 +24,13 @@
         </div>
       </div>
       <div class="inbox_chat" id="sidebar">
-        <!-- <div class="chat_list active_chat">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div> -->
       </div>
-    </div>
+    </div> -->
     <!-- -----------MESSAGES------------------------------ -->
     <div class="mesgs">
       <div class="my_chat">
       <div class="msg_history" id="chat">
-        <!-- <div class="incoming_msg">
-          <div class="incoming_msg_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
-          <div class="received_msg">
-            <div class="received_withd_msg">
-              <p>Test which is a new approach to have all
-                solutions</p>
-              <span class="time_date"> 11:01 AM    |    June 9</span></div>
-          </div>
-        </div>
-        <div class="outgoing_msg">
-          <div class="sent_msg">
-            <p>Test which is a new approach to have all
-              solutions</p>
-            <span class="time_date"> 11:01 AM    |    June 9</span> </div>
-        </div>
-        <div class="incoming_msg">
-          <div class="incoming_msg_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
-          <div class="received_msg">
-            <div class="received_withd_msg">
-              <p>Test, which is a new approach to have</p>
-              <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
-          </div>
-        </div>
-        <div class="outgoing_msg">
-          <div class="sent_msg">
-            <p>Apollo University, Delhi, India Test</p>
-            <span class="time_date"> 11:01 AM    |    Today</span> </div>
-        </div> -->
-        <!-- <div class="incoming_msg">
-          <div class="incoming_msg_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
-          <div class="received_msg">
-            <div class="received_withd_msg">
-              <p>We work directly with our designers and suppliers,
-                and sell direct to you, which means quality, exclusive
-                products, at a price anyone can afford.</p>
-              <span class="time_date"> 11:01 AM    |    Today</span></div>
-          </div>
-        </div> -->
-      </div>
-    
+      </div>    
       <div class="type_msg">
         <div class="input_msg_write">
           <input type="text" class="write_msg" placeholder="Type a message" />
@@ -126,18 +39,19 @@
       </div>
     </div>
     </div>
-  </div>
+  <!-- </div>
 </div>
-</div>
+</div> -->
 
 
     <!-- Переводит room_name из views.py в room-name для js и consumers.py-->
     {{ request.user.username|json_script:"user_username" }}
     {{ room_name|json_script:"chat_pk" }}
-    <script src="{% static 'reconnecting-websocket.js' %}"></script>
+<script src="{% static 'reconnecting-websocket.js' %}"></script>
+
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <!-- <script src="{% static 'chat.js' %}"></script> -->
-    <script>
+    <!-- <script>
         const username = JSON.parse(document.getElementById('user_username').textContent);
         const sidebarSocket = new ReconnectingWebSocket(
             'ws://' +
@@ -182,6 +96,7 @@
             var aTag = document.createElement('a');
             // aTag.textContent = title + "\n" + last_message;
             aTag.href = link;
+            aTag.className = 'chat_link'
             // document.querySelector('#sidebar').appendChild(aTag);
             // document.querySelector('#sidebar').appendChild(br);
 
@@ -205,7 +120,7 @@
             name.textContent = data['title'];
             var date = document.createElement('span');
             date.className = 'chat_date';
-            date.textContent = 'Dec 25';
+            date.textContent = data['timestamp'];
             name.appendChild(date);
             var message = document.createElement('p');
             message.textContent = last_message;
@@ -217,10 +132,10 @@
             aTag.appendChild(div1);
             document.querySelector('#sidebar').appendChild(aTag);
         };
-    </script>
+    </script> -->
 <script>
-    const user_username = JSON.parse(document.getElementById('user_username').textContent);
-    const roomName = JSON.parse(document.getElementById('chat_pk').textContent);
+    user_username = JSON.parse(document.getElementById('user_username').textContent);
+    roomName = JSON.parse(document.getElementById('chat_pk').textContent);
     var page = 1;
     // document.querySelector('#input').onkeyup = function(e) {
     //     if (e.keyCode === 13) {  // enter, return
@@ -358,7 +273,7 @@
                 fetchMessages(page);
                 // var h = $(chat).children().eq(0).height();
                 var h = 1;
-                chat.scrollTop(1);
+                chat.scrollTop(2);
                 console.log(chat.scrollHeight);
             }
         });

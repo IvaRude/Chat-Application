@@ -16,7 +16,7 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         return {
             'author': message.author.username,
             'content': message.content,
-            'timestamp': str(message.timestamp),
+            'timestamp': str(message.formate_date()),
         }
 
     async def messages_to_json(self, messages):
@@ -139,7 +139,7 @@ class SideBarConsumer(AsyncWebsocketConsumer):
             'last_message': last_message,
             'chat_pk': chat.pk,
             'link': chat.get_absolute_url(),
-            # 'timestamp': str(message.timestamp),
+            'timestamp': str(chat.formate_date()),
         }
 
     async def chats_to_json(self, chats):

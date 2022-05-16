@@ -3,9 +3,7 @@ from django.utils import timezone
 # from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-import datetime
-
-tomorrow = datetime.datetime.now()
+from datetime import datetime, timedelta
 
 User = get_user_model()
 
@@ -25,6 +23,13 @@ class Chat(models.Model):
 
     def last_message(self):
         return self.messages.last()
+
+    def formate_date(self):
+        if datetime.now().date() == self.timestamp.date():
+            return 'Today'
+        elif (datetime.now() - timedelta(days=1)).date() == self.timestamp.date():
+            return 'Yesterday'
+        return self.timestamp.strftime('%B %d')
 
     def get_absolute_url(self):
         return reverse('room', args=[str(self.pk)])
@@ -47,6 +52,14 @@ class Message(models.Model):
         self.chat.is_empty = False
         self.chat.timestamp = self.timestamp
         self.chat.save()
+
+    def formate_date(self):
+        if datetime.now().date() == self.timestamp.date():
+            return self.timestamp.strftime('%H:%M | Today')
+        elif (datetime.now() - timedelta(days=1)).date() == self.timestamp.date():
+            return self.timestamp.strftime('%H:%M | Yesterday')
+        return self.timestamp.strftime('%H:%M | %B %d')
+
 
     def last_10_messages():
         return Message.objects.order_by('-timestamp').all()[:10]
