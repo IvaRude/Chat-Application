@@ -6,7 +6,7 @@
 
 <div class="user_info">
     <div class="stlb-avatar">
-        <img src="/images/{{ object.avatar }}" alt="sunil" class="avatar">
+        <img src="{{ object.avatar.url }}" alt="sunil" class="avatar">
         <a href="{% url 'edit' object.pk %}">Edit Profile</a>
     </div>
     Username: {{ object.user }}<br>

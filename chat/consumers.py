@@ -56,10 +56,6 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
                 'type': 'fetch_chats',
             }))
             tasks.append(task)
-            # await self.channel_layer.group_send('sidebar_%s' % member.username,
-            # {
-            #     'type': 'fetch_chats',
-            # })
         asyncio.as_completed(tasks)
 
     commands = {
@@ -134,7 +130,6 @@ class SideBarConsumer(AsyncWebsocketConsumer):
         title = chat.members.exclude(pk=self.user.pk)[0].get_name()
         avatar = chat.members.exclude(pk=self.user.pk)[0].user_info.avatar.url
         last_message = chat.last_message().content
-        # link = chat.get_absolute_url()
         if len(last_message) > 15:
             last_message = last_message[:12] + '...'
         return {
@@ -147,11 +142,9 @@ class SideBarConsumer(AsyncWebsocketConsumer):
         }
 
     async def chats_to_json(self, chats):
-        # return await self.one_chat_to_json(chats[0])
         return [await sync_to_async(self.one_chat_to_json)(chat) for chat in chats]
     
     async def fetch_chats(self, data):
-        # await sync_to_async(print)('fetch_chats')
         chats = await sync_to_async(list)(self.user.chats.filter(is_empty=False).order_by('timestamp'))
         content = {
             'chats': await self.chats_to_json(chats),
@@ -186,7 +179,6 @@ class SideBarConsumer(AsyncWebsocketConsumer):
     commands = {
         'fetch_chats': fetch_chats,
         'search': search,
-        # 'new_message': new_message,
     }
 
     async def send_chats(self, chats):
