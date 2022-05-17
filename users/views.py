@@ -21,9 +21,23 @@ class SignUpView(CreateView):
     template_name = 'registration/signup.html'
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = UserInfo
     template_name = 'accounts/profile.html'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = UserInfo
+    fields = ['first_name', 'last_name']
+    template_name = 'accounts/edit.html'
+    login_url = 'login'
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
 
 
 class UsersListView(ListView):

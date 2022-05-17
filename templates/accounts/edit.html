@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- <h4 class="content-name">Update Information</h4> -->
+    <form method='POST'>
+        {% csrf_token %}
+            <div class="login">
+                First Name: <input type="text" id="username" autofocus="autofocus" value="{{ object.first_name }}" name="first_name">
+                Second Name:
+                <input type="text" id="password" value="{% if object.last_name %}{{ object.last_name }} {% else %}{% endif %}" name="last_name">			
+                <button type="submit">Update</button>
+            </div>
+    </form>
+{% endblock content %}

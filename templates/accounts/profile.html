@@ -3,10 +3,19 @@
 {% block title%}Profile{% endblock title %}
 
 {% block content %}
-{{ object.user }}<br>
 
-{{ object.first_name }}<br>
-
-{{ object.last_name }}
+<div class="user_info">
+    <div class="stlb-avatar">
+        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil" class="avatar">
+        <a href="{% url 'edit' object.pk %}">Edit Profile</a>
+    </div>
+    Username: {{ object.user }}<br>
+    {% if object.first_name %}
+        {{ object.first_name }}<br>
+    {% endif %}
+    {% if object.last_name %}
+        {{ object.last_name }}
+    {% endif %}
+</div>
 
 {% endblock content %}

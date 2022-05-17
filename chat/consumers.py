@@ -1,6 +1,8 @@
 # from contextlib import AsyncContextDecorator
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
+from django.db.models import Q
+from django.urls import reverse
 from asgiref.sync import sync_to_async
 from channels.layers import get_channel_layer
 import json
@@ -129,7 +131,7 @@ class SideBarConsumer(AsyncWebsocketConsumer):
         await self.commands[text_data_json['command']](self, text_data_json)
 
     def one_chat_to_json(self, chat):
-        title = chat.members.exclude(pk=self.user.pk)[0].username
+        title = chat.members.exclude(pk=self.user.pk)[0].get_name()
         last_message = chat.last_message().content
         # link = chat.get_absolute_url()
         if len(last_message) > 15:
@@ -153,11 +155,33 @@ class SideBarConsumer(AsyncWebsocketConsumer):
             'chats': await self.chats_to_json(chats),
             'command': 'fetch_chats',
         }
+        await self.send_chats(content)  
+
+    def one_user_to_json(self, user):
+        return {
+            'title': user.get_name(),
+            'pk': user.pk,
+            'link': reverse('create_chat', args=[str(user.pk)])
+        }
+    
+    async def users_to_json(self, users):
+        return [await sync_to_async(self.one_user_to_json)(user) for user in users]
+
+    async def search(self, data):
+        search = data['search']
+        object_list = await sync_to_async(list)(User.objects.filter(
+            Q(username__icontains=search) | Q(user_info__first_name__icontains=search) | 
+            Q(user_info__last_name__icontains=search)
+        ))
+        content = {
+            'command': 'search',
+            'users': await self.users_to_json(object_list),
+        }
         await self.send_chats(content)
-    
-    
+
     commands = {
         'fetch_chats': fetch_chats,
+        'search': search,
         # 'new_message': new_message,
     }
 

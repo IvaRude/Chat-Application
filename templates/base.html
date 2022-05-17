@@ -28,20 +28,20 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'logout' %}">Log Out</a>
                 <a href="{{ request.user.user_info.get_absolute_url }}">My Profile</a>
-                <a href="{% url 'all_users' %}">Users</a>
+                <!-- <a href="{% url 'all_users' %}">Users</a> -->
             {% else %}
                 <a href="{% url 'login' %}">Log In</a>
             {% endif %}
         </div>
       <div class="headind_srch">
         <div class="recent_heading">
-          <h4>Recent</h4>
+          <button id="contacts"><h4>Contacts</h4></button>
         </div>
         <div class="srch_bar">
           <div class="stylish-input-group">
-            <input type="text" class="search-bar"  placeholder="Search" >
+            <input type="text" class="search-bar"  placeholder="Search Users" >
             <span class="input-group-addon">
-            <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+            <button type="button" id="search_btn"> <i class="fa fa-search" aria-hidden="true"></i> </button>
             </span> </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
 
         sidebarSocket.onmessage = function(e) {
             var data = JSON.parse(e.data);
-            // console.log(data)
+            console.log(data)
             if (data['command'] === 'fetch_chats') {
                 
                 document.querySelector('#sidebar').innerHTML = "";
@@ -97,10 +97,53 @@
                 for (let i=data['chats'].length - 1; i >= 0; i--) {
                 createChatLink(data['chats'][i]);
                 }
-            } else if (data['command'] === 'new_message'){
-                createChat(data['message']);
+            } else if (data['command'] === 'search'){
+                document.querySelector('#sidebar').innerHTML = "";
+                if(data['users'].length > 0) {
+                    for (let i=data['users'].length - 1; i >= 0; i--) {
+                    createUserLink(data['users'][i]);
+                    }
+                }
+                else {
+                    var p = document.createElement('p')
+                    p.textContent = 'Users not found';
+                    p.className = 'no_users';
+                    document.querySelector('#sidebar').appendChild(p);
+                }
             }
         };
+
+        function createUserLink(data) {
+            var title = data['title'];
+            var user_pk = data['pk'];
+
+            var aTag = document.createElement('a');
+            aTag.href = data['link'];
+            aTag.className = 'chat_link'
+            var div1 = document.createElement('div');
+            div1.className = 'chat_list';
+            if (roomName && roomName == data['chat_pk']){
+                div1.className += ' active_chat';
+            }
+            var div2 = document.createElement('div');
+            div2.className = 'chat_people';
+            var div3 = document.createElement('div');
+            var div4 = document.createElement('div');
+            var img = document.createElement('img');
+            img.alt = 'sunil';
+            img.src = 'https://bootdey.com/img/Content/avatar/avatar1.png';
+            div3.appendChild(img);
+            div3.className = 'chat_img';
+            div4.className = 'chat_ib';
+            var name = document.createElement('h5');
+            name.textContent = data['title'];
+            div4.appendChild(name);
+            div2.appendChild(div3);
+            div2.appendChild(div4);
+            div1.appendChild(div2);
+            aTag.appendChild(div1);
+            document.querySelector('#sidebar').appendChild(aTag);
+        }
 
         function createChatLink(data) {
             // console.log('create chat link');
@@ -109,14 +152,9 @@
             var last_message = data['last_message'];
             var link = data['link'];
 
-            var br = document.createElement('br');
             var aTag = document.createElement('a');
-            // aTag.textContent = title + "\n" + last_message;
             aTag.href = link;
             aTag.className = 'chat_link'
-            // document.querySelector('#sidebar').appendChild(aTag);
-            // document.querySelector('#sidebar').appendChild(br);
-
 
             var div1 = document.createElement('div');
             div1.className = 'chat_list';
@@ -149,5 +187,30 @@
             aTag.appendChild(div1);
             document.querySelector('#sidebar').appendChild(aTag);
         };
+
+        document.querySelector('.search-bar').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#search_btn').click();
+            }
+        };
+
+        document.querySelector('#search_btn').onclick = function (e) {
+            if(username){
+            const inputSearch = document.querySelector('.search-bar');
+            const search = inputSearch.value;
+            sidebarSocket.send(JSON.stringify({
+                'search': search,
+                'command': 'search',
+                // 'command': 'fetch_messages',
+                // 'chat_name': roomName,
+            }));
+            inputSearch.value = '';
+        }};
+        document.querySelector('#contacts').onclick = function (e) {
+            if(username){
+            const inputSearch = document.querySelector('.search-bar');
+            fetchChats();
+            inputSearch.value = '';
+        }};
     </script>
 </html>

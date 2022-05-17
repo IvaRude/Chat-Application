@@ -17,21 +17,17 @@ import os
 
 
 class CustomUser(AbstractUser):
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     user_info = UserInfo.objects.create(
-    #         user=self,
-    #         first_name='',
-    #         last_name='',
-    #     )
-    # def my_chats(self):
-    #     return self.chats.filter(members__contains=self)
-    pass
+    def get_name(self):
+        first_name = self.user_info.first_name
+        last_name = str(self.user_info.last_name)
+        if first_name or last_name:
+            return ' '.join([first_name, last_name]).strip()
+        return self.username
 
 class UserInfo(models.Model):
     user = AutoOneToOneField(CustomUser, related_name='user_info', on_delete=models.CASCADE, null=False)
-    first_name = models.CharField(max_length=30, verbose_name='Имя', null=True, blank=True)
-    last_name = models.CharField(max_length=30, verbose_name='Фамилия', null=True, blank=True)
+    first_name = models.CharField(max_length=30, verbose_name='Имя', default='')
+    last_name = models.CharField(max_length=30, verbose_name='Фамилия', default='')
     # birth_date = models.DateField(
     #     verbose_name='Дата рождения', null=True, blank=True)
     # age = models.PositiveIntegerField(null=True, blank=True)

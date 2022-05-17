@@ -230,3 +230,42 @@ header {
     border: none;
     font-weight: bold;
   }
+  /* ---------------FOR PROFILE-------------------------------- */
+  .stlb-avatar {
+    max-width: 200px;
+    width: 50%;
+    margin-right: 2%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .user_info {
+    display: flex;
+    margin: 5%;
+    font-weight: bold;
+  }
+  .stlb-avatar a {
+    background: #05728f;
+    color: #fff;
+    /* position: absolute; */
+    width: 100%;
+    margin-top: 1%;
+    text-align: center;
+  }
+  .content-name {
+    margin-left: 100px;
+  }
+  /* -----------------FOR SEARCH----------------------------- */
+  .no_users {
+    text-align: center;
+    font-weight: bold;
+  }
+  #contacts {
+    border: none;
+    /* background-color: #f8f8f8; */
+    background: none;
+    outline: none;
+  }
+  #contacts :hover{
+    background-color: #ebebeb;
+  }
