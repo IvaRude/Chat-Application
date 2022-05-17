@@ -15,6 +15,10 @@ import os
 # class PostAuthor(models.Model):
 #     pass
 
+def user_images_directory_path(instance, filename):
+    # путь, куда будет осуществлена загрузка MEDIA_ROOT/user_<id>/<filename>
+    return 'images/user_{0}/{1}'.format(instance.user.pk, filename)
+
 
 class CustomUser(AbstractUser):
     def get_name(self):
@@ -26,11 +30,20 @@ class CustomUser(AbstractUser):
 
 class UserInfo(models.Model):
     user = AutoOneToOneField(CustomUser, related_name='user_info', on_delete=models.CASCADE, null=False)
-    first_name = models.CharField(max_length=30, verbose_name='Имя', default='')
-    last_name = models.CharField(max_length=30, verbose_name='Фамилия', default='')
+    first_name = models.CharField(max_length=30, verbose_name='Имя', default='', null=True, blank=True)
+    last_name = models.CharField(max_length=30, verbose_name='Фамилия', default='', null=True, blank=True)
+    avatar = models.ImageField(upload_to=user_images_directory_path, verbose_name='Аватар', null=True, blank=True,
+                               default='/images/no_avatar.png')
     # birth_date = models.DateField(
     #     verbose_name='Дата рождения', null=True, blank=True)
     # age = models.PositiveIntegerField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.first_name:
+            self.first_name = ''
+        if not self.last_name:
+            self.last_name = ''
+        super(UserInfo, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """ нужен, чтобы при создании очередного объекта сразу перебрасывало на эту страницу

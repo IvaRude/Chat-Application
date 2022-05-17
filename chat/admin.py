@@ -5,13 +5,20 @@ from .models import Message, Chat
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ['author', 'chat', 'content', 'timestamp']
-    pass
+
+
+class MessageInline(admin.StackedInline):
+    model = Message
+    extra = 0
 
 
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
-    list_display = ['timestamp',]
-    pass
+    inlines = [MessageInline,]
+    list_display = ['timestamp', 'find_messages']
 
+    def find_messages(self, obj):
+        messages = obj.messages.all()
+        return messages
 
-# admin.site.register(Chat)
+    find_messages.short_description = "Messages"

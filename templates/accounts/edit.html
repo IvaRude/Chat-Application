@@ -2,12 +2,13 @@
 
 {% block content %}
     <!-- <h4 class="content-name">Update Information</h4> -->
-    <form method='POST'>
+    <form method='POST' enctype="multipart/form-data">
         {% csrf_token %}
             <div class="login">
                 First Name: <input type="text" id="username" autofocus="autofocus" value="{{ object.first_name }}" name="first_name">
                 Second Name:
-                <input type="text" id="password" value="{% if object.last_name %}{{ object.last_name }} {% else %}{% endif %}" name="last_name">			
+                <input type="text" id="password" value="{% if object.last_name %}{{ object.last_name }}{% else %}{% endif %}" name="last_name">
+                <input type="file" accept="image/*" alt="альтернативный текст" name="avatar">		
                 <button type="submit">Update</button>
             </div>
     </form>

@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title%}Profile{% endblock title %}
 
 {% block content %}
 
 <div class="user_info">
     <div class="stlb-avatar">
-        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil" class="avatar">
+        <img src="/images/{{ object.avatar }}" alt="sunil" class="avatar">
         <a href="{% url 'edit' object.pk %}">Edit Profile</a>
     </div>
     Username: {{ object.user }}<br>

@@ -19,6 +19,7 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             'author': message.author.username,
             'content': message.content,
             'timestamp': str(message.formate_date()),
+            'avatar': message.author.user_info.avatar.url,
         }
 
     async def messages_to_json(self, messages):
@@ -132,6 +133,7 @@ class SideBarConsumer(AsyncWebsocketConsumer):
 
     def one_chat_to_json(self, chat):
         title = chat.members.exclude(pk=self.user.pk)[0].get_name()
+        avatar = chat.members.exclude(pk=self.user.pk)[0].user_info.avatar.url
         last_message = chat.last_message().content
         # link = chat.get_absolute_url()
         if len(last_message) > 15:
@@ -142,6 +144,7 @@ class SideBarConsumer(AsyncWebsocketConsumer):
             'chat_pk': chat.pk,
             'link': chat.get_absolute_url(),
             'timestamp': str(chat.formate_date()),
+            'avatar': avatar,
         }
 
     async def chats_to_json(self, chats):
@@ -158,10 +161,12 @@ class SideBarConsumer(AsyncWebsocketConsumer):
         await self.send_chats(content)  
 
     def one_user_to_json(self, user):
+        avatar = user.user_info.avatar.url
         return {
             'title': user.get_name(),
             'pk': user.pk,
-            'link': reverse('create_chat', args=[str(user.pk)])
+            'link': reverse('create_chat', args=[str(user.pk)]),
+            'avatar': avatar,
         }
     
     async def users_to_json(self, users):

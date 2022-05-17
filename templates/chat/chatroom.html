@@ -152,6 +152,9 @@
     document.querySelector('.msg_send_btn').onclick = function (e) {
         const messageInputDom = document.querySelector('.write_msg');
         const message = messageInputDom.value;
+        if(message.length == 0) {
+            return 
+        }
         chatSocket.send(JSON.stringify({
             'content': message,
             'author': user_username,
@@ -238,7 +241,7 @@
           div2.className = 'incoming_msg_img';
 
           var avatar = document.createElement('img');
-          avatar.src = 'https://bootdey.com/img/Content/avatar/avatar1.png';
+          avatar.src = data['avatar'];
           avatar.alt = 'sunil';
 
           var div3 = document.createElement('div');

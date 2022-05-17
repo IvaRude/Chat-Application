@@ -22,7 +22,7 @@ class Chat(models.Model):
         return self.messages.all()[:10]
 
     def last_message(self):
-        return self.messages.last()
+        return self.messages.first()
 
     def formate_date(self):
         if datetime.now().date() == self.timestamp.date():
@@ -38,11 +38,11 @@ class Chat(models.Model):
 class Message(models.Model):
     author = models.ForeignKey(User, related_name='author_messages', on_delete=models.CASCADE)
     chat = models.ForeignKey(Chat, related_name='messages', on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.TextField(null=False, blank=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['timestamp']
+        ordering = ['-timestamp']
 
     def __str__(self):
         return self.author.username

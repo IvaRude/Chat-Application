@@ -32,7 +32,7 @@ class ProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = UserInfo
-    fields = ['first_name', 'last_name']
+    fields = ['first_name', 'last_name', 'avatar']
     template_name = 'accounts/edit.html'
     login_url = 'login'
 
