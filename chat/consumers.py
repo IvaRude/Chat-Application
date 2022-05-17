@@ -96,7 +96,6 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
                 # type указывает на нужный метод
                 'type': 'chatroom_message',
                 'message': message,
-                # 'username': username,
             }
         )
     

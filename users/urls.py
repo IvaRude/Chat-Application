@@ -9,5 +9,4 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('<int:pk>/edit/', ProfileEditView.as_view(), name='edit'),
     path('<int:pk>/', ProfileView.as_view(), name='profile'),
-    path('', UsersListView.as_view(), name='all_users'),
 ]

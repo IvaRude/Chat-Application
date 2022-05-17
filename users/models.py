@@ -6,14 +6,6 @@ from django.contrib.auth import authenticate, login
 from annoying.fields import AutoOneToOneField
 import os
 
-# from chats.models import Chat
-
-# def avatar_upload_to(instance, filename):
-#     return os.path.join(MEDIA_ROOT, instance.user.username + os.path.splitext(filename)[1])
-
-
-# class PostAuthor(models.Model):
-#     pass
 
 def user_images_directory_path(instance, filename):
     # путь, куда будет осуществлена загрузка MEDIA_ROOT/user_<id>/<filename>
@@ -34,9 +26,6 @@ class UserInfo(models.Model):
     last_name = models.CharField(max_length=30, verbose_name='Фамилия', default='', null=True, blank=True)
     avatar = models.ImageField(upload_to=user_images_directory_path, verbose_name='Аватар', null=True, blank=True,
                                default='/images/no_avatar.png')
-    # birth_date = models.DateField(
-    #     verbose_name='Дата рождения', null=True, blank=True)
-    # age = models.PositiveIntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.first_name:
