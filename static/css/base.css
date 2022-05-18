@@ -4,7 +4,7 @@
   .inbox_people {
     background: #f8f8f8 none repeat scroll 0 0;
     float: left;
-    overflow: hidden;
+    /* overflow: scroll; */
     width: 35%; 
     border-right:1px solid #c4c4c4;
   }
@@ -55,13 +55,19 @@
     width: 78%;
   }
   
-  .chat_people{ overflow:hidden; clear:both;}
+  .chat_people{ 
+    overflow:hidden; 
+    clear:both;}
   .chat_list {
     border-bottom: 1px solid #c4c4c4;
     margin: 0;
     padding: 18px 16px 10px;
   }
-  .inbox_chat { height: 550px; overflow-y: scroll;}
+  .inbox_chat { 
+    height: 550px; 
+    overflow-y: auto;
+    padding-bottom: 57px;
+  }
   
   .active_chat{ background:#ebebeb;}
   

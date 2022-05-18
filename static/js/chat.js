@@ -35,7 +35,6 @@ const chatSocket = new ReconnectingWebSocket(
 
 
 chatSocket.onopen = function(e) {
-    
     fetchMessages(page);
 };
 
@@ -57,7 +56,11 @@ chatSocket.onmessage = function(e) {
     } else if (data['command'] === 'new_message'){
         var msg = createMessage(data['message']);
         document.querySelector('.msg_history').appendChild(msg);
-        $(".msg_history").scrollTop(123);
+        if(username == data['message']['author']){
+            var chat = document.getElementById('chat');
+            var h = chat.scrollHeight;
+            $('#chat').stop().animate({ scrollTop: h}, 300);
+        }
     }
 };
 
@@ -112,18 +115,18 @@ function createMessage(data) {
 };
 
 
-var chat = $('#chat');
-// $(window).scroll(function()
-chat.scrollTop(chat[0].scrollHeight);
-// chat.scrollIntoView({ behavior: 'smooth', block: 'end' });
-$(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
-chat.scroll(function(){
-        if ($(this).scrollTop() == 0) {
-            page += 1;
-            fetchMessages(page);
-            // var h = $(chat).children().eq(0).height();
-            var h = 1;
-            chat.scrollTop(2);
-            console.log(chat.scrollHeight);
-        }
-    });
+// this is for scrolling in the start
+var chat = document.getElementById('chat');
+var h = chat.scrollHeight;
+$('#chat').stop().animate({ scrollTop: h}, 300);
+
+
+// this is for loading old messages
+var chat_scroll = $('#chat');
+chat_scroll.scroll(function(){
+    if ($(this).scrollTop() == 0) {
+        page += 1;
+        fetchMessages(page);
+        chat.scrollTop = 2;
+    }
+});
